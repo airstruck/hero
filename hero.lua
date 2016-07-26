@@ -99,6 +99,7 @@ local function Fixture (t, body)
     fixture:setMask(unpack(t.mask))
     fixture:setRestitution(t.restitution)
     fixture:setSensor(t.sensor)
+    fixture:setUserData(t.userData)
     
     body:resetMassData()
     
@@ -118,6 +119,7 @@ local function FixtureState (fixture)
         mask = { fixture:getMask() },
         restitution = fixture:getRestitution(),
         sensor = fixture:isSensor(),
+        userData = fixture:getUserData(),
         
         shapeState = ShapeState(fixture:getShape()),
     }
@@ -539,7 +541,6 @@ local function WorldState (world)
     local bodies = removeDestroyed(world:getBodyList())
     local joints = removeDestroyed(world:getJointList()) 
     local bodyStates, bodyMap, jointStates, jointMap = {}, {}, {}, {}
-    local lookup = {}
     
     for i, body in ipairs(bodies) do
         bodyMap[body] = i
