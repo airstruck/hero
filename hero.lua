@@ -263,12 +263,12 @@ local function PrismaticJoint (t, bodyMap, jointMap)
         t.axis[1], t.axis[2],
         t.collideConnected)
 
-    joint:setLimitsEnabled(t.limitsEnabled)
     joint:setLowerLimit(t.lowerLimit)
     joint:setMaxMotorForce(t.maxMotorForce)
     joint:setMotorEnabled(t.motorEnabled)
     joint:setMotorSpeed(t.motorSpeed)
     joint:setUpperLimit(t.upperLimit)
+    joint:setLimitsEnabled(t.limitsEnabled)
     
     return joint
 end
@@ -293,12 +293,12 @@ local function RevoluteJoint (t, bodyMap, jointMap)
         t.anchors[1], t.anchors[2], t.anchors[3], t.anchors[4],
         t.collideConnected)
     
-    joint:setLimitsEnabled(t.limitsEnabled)
     joint:setLowerLimit(t.lowerLimit)
     joint:setMaxMotorTorque(t.maxMotorTorque)
     joint:setMotorEnabled(t.motorEnabled)
     joint:setMotorSpeed(t.motorSpeed)
     joint:setUpperLimit(t.upperLimit)
+    joint:setLimitsEnabled(t.limitsEnabled)
     
     return joint
 end
@@ -335,7 +335,6 @@ local function WheelJoint (t, bodyMap, jointMap)
         t.axis[1], t.axis[2],
         t.collideConnected)
 
-    joint:setLimitsEnabled(t.limitsEnabled)
     joint:setLowerLimit(t.lowerLimit)
     joint:setMaxMotorTorque(t.maxMotorTorque)
     joint:setMotorEnabled(t.motorEnabled)
@@ -343,6 +342,7 @@ local function WheelJoint (t, bodyMap, jointMap)
     joint:setUpperLimit(t.upperLimit)
     joint:setSpringDampingRatio(t.springDampingRatio)
     joint:setSpringFrequency(t.springFrequency)
+    joint:setLimitsEnabled(t.limitsEnabled)
     
     return joint
 end
