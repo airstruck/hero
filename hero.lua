@@ -13,8 +13,14 @@ end
 -- Shape
 
 local function ChainShape (t)
-    return lp.newChainShape(false, t.points)
-    -- what about setNextVertex and setPreviousVertex?
+    local shape = lp.newChainShape(false, t.points)
+    if #t.nextVertex > 1 then
+        shape:setNextVertex(t.nextVertex[1], t.nextVertex[2])
+    end
+    if #t.previousVertex > 1 then
+        shape:setPreviousVertex(t.previousVertex[1], t.previousVertex[2])
+    end
+    return shape
 end
 
 local function CircleShape (t)
@@ -47,6 +53,8 @@ end
 local function ChainShapeState (shape)
     return {
         points = { shape:getPoints() },
+        nextVertex = { shape:getNextVertex() },
+        previousVertex = { shape:getPreviousVertex() },
     }
 end
 
