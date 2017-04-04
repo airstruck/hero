@@ -14,12 +14,8 @@ end
 
 local function ChainShape (t)
     local shape = lp.newChainShape(false, t.points)
-    if #t.nextVertex > 1 then
-        shape:setNextVertex(t.nextVertex[1], t.nextVertex[2])
-    end
-    if #t.previousVertex > 1 then
-        shape:setPreviousVertex(t.previousVertex[1], t.previousVertex[2])
-    end
+    shape:setNextVertex(t.nextVertex[1], t.nextVertex[2])
+    shape:setPreviousVertex(t.previousVertex[1], t.previousVertex[2])
     return shape
 end
 
@@ -104,7 +100,7 @@ local function Fixture (t, body)
     fixture:setFilterData(t.filterData[1], t.filterData[2], t.filterData[3])
     fixture:setFriction(t.friction)
     fixture:setGroupIndex(t.groupIndex)
-    fixture:setMask(unpack(t.mask))
+    fixture:setMask(t.mask)
     fixture:setRestitution(t.restitution)
     fixture:setSensor(t.sensor)
     fixture:setUserData(t.userData)
@@ -264,12 +260,12 @@ local function MouseJoint (t, bodyMap, jointMap)
 end
 
 local function PrismaticJoint (t, bodyMap, jointMap)
-    -- body1, body2, x1, y1, x2, y2, ax, ay, collideConnected
+    -- body1, body2, x1, y1, x2, y2, ax, ay, collideConnected, referenceAngle
     local joint = lp.newPrismaticJoint(
         bodyMap[t.bodies[1]].body, bodyMap[t.bodies[2]].body,
         t.anchors[1], t.anchors[2], t.anchors[3], t.anchors[4],
         t.axis[1], t.axis[2],
-        t.collideConnected)
+        t.collideConnected, t.referenceAngle)
 
     joint:setLowerLimit(t.lowerLimit)
     joint:setMaxMotorForce(t.maxMotorForce)
@@ -295,11 +291,11 @@ local function PulleyJoint (t, bodyMap, jointMap)
 end
 
 local function RevoluteJoint (t, bodyMap, jointMap)
-    -- body1, body2, x1, y1, x2, y2, collideConnected
+    -- body1, body2, x1, y1, x2, y2, collideConnected, referenceAngle
     local joint = lp.newRevoluteJoint(
         bodyMap[t.bodies[1]].body, bodyMap[t.bodies[2]].body,
         t.anchors[1], t.anchors[2], t.anchors[3], t.anchors[4],
-        t.collideConnected)
+        t.collideConnected, t.referenceAngle)
     
     joint:setLowerLimit(t.lowerLimit)
     joint:setMaxMotorTorque(t.maxMotorTorque)
@@ -323,11 +319,11 @@ local function RopeJoint (t, bodyMap, jointMap)
 end
 
 local function WeldJoint (t, bodyMap, jointMap)
-    -- body1, body2, x1, y1, x2, y2, collideConnected
+    -- body1, body2, x1, y1, x2, y2, collideConnected, referenceAngle
     local joint = lp.newWeldJoint(
         bodyMap[t.bodies[1]].body, bodyMap[t.bodies[2]].body,
         t.anchors[1], t.anchors[2], t.anchors[3], t.anchors[4],
-        t.collideConnected)
+        t.collideConnected, t.referenceAngle)
     
     joint:setDampingRatio(t.dampingRatio)
     joint:setFrequency(t.frequency)
@@ -343,14 +339,11 @@ local function WheelJoint (t, bodyMap, jointMap)
         t.axis[1], t.axis[2],
         t.collideConnected)
 
-    joint:setLowerLimit(t.lowerLimit)
     joint:setMaxMotorTorque(t.maxMotorTorque)
     joint:setMotorEnabled(t.motorEnabled)
     joint:setMotorSpeed(t.motorSpeed)
-    joint:setUpperLimit(t.upperLimit)
     joint:setSpringDampingRatio(t.springDampingRatio)
     joint:setSpringFrequency(t.springFrequency)
-    joint:setLimitsEnabled(t.limitsEnabled)
     
     return joint
 end
@@ -432,6 +425,7 @@ local function PrismaticJointState (joint, bodyMap, jointMap)
         upperLimit = joint:getUpperLimit(),
         limitsEnabled = joint:hasLimitsEnabled(),
         motorEnabled = joint:isMotorEnabled(),
+        referenceAngle = joint:getReferenceAngle(),
     }
 end
 
@@ -450,6 +444,7 @@ local function RevoluteJointState (joint, bodyMap, jointMap)
         upperLimit = joint:getUpperLimit(),
         limitsEnabled = joint:hasLimitsEnabled(),
         motorEnabled = joint:isMotorEnabled(),
+        referenceAngle = joint:getReferenceAngle(),
     }
 end
 
@@ -463,6 +458,7 @@ local function WeldJointState (joint, bodyMap, jointMap)
     return {
         dampingRatio = joint:getDampingRatio(),
         frequency = joint:getFrequency(),
+        referenceAngle = joint:getReferenceAngle(),
     }
 end	
 
